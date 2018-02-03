@@ -74,6 +74,52 @@ app.use(function(err, req, res, next) {
   // render the error page
   res.status(err.status || 500);
   res.render('error');
+
+
+//HTTP Server Routes
+
+  app.post('/upload', upload.single('file'));
+
+  app.get("/projectList", function(req, res) {
+        connection.query('SELECT * from Project', function(err, rows, fields) {
+            if (!err) {  
+                res.json(rows);  
+                res.end(); 
+            } 
+            else {console.log('Error while performing query');}
+        });
+    });
+
+    app.post("/insertProject", function(req, res) {
+
+          var returnProjectID = function() {
+              connection.query('SELECT Project_id from Project where Project_name = "' + req.body.name + '"', function(err, rows, fields) { 
+                  if (!err) {  
+                      res.send(rows[0]);  
+                      res.end(); 
+                  } else console.log(err);
+              })
+          };
+
+          if (req.body.projectid == null || req.body.projectid == "null") {
+              connection.query('insert into Project (Project_name, Project_content) ' +
+                  'values (?,?)', [req.body.name, req.body.content],
+                  function(err, rows, fields) { 
+                      if (!err) {  // return new project ID
+                           
+                          returnProjectID(); 
+                      } 
+                      else  console.log(err);
+                  });
+          } else {
+              connection.query('UPDATE Project SET Project_name="' + req.body.name + '"' + ', Project_content=' + JSON.stringify(req.body.content) + ' WHERE Project_id=' +
+                  req.body.projectid,
+                  function(err, rows, fields) { 
+                      if (!err) returnProjectID(); 
+                      else console.log(err);
+                  });
+          }
+      });
 });
 
 module.exports = app;
