@@ -8,11 +8,9 @@
 	url(https://fonts.gstatic.com/s/opensans/v13/u-WUoqrET9fUeobQW7jkRT8E0i7KZn-EPnyo3HZu7kw.woff) format('woff');
 }
 
-
 body {
   padding: 10px;
 }
-
 
 .extraTopPdding{
 	padding-top:10px !important;

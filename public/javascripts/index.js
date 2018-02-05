@@ -26,7 +26,6 @@ app.controller('mainController', ['$scope', '$http', '$timeout', 'Fabric', 'Fabr
         $scope.workshopNo = dNow.getDate() + dNow.getHours() + dNow.getMinutes();
         $scope.projectname = "DESIGN Number:" + $scope.workshopNo;
 
-        //
         // Creating Canvas Objects
         // ================================================================
 
@@ -46,10 +45,10 @@ app.controller('mainController', ['$scope', '$http', '$timeout', 'Fabric', 'Fabr
             $scope.fabric.setDirty(true);
             if ($scope.fabric.selectedObject &&
                 $scope.fabric.selectedObject.type == "text") {
-                // Change the color of the text
+                // Change the color of  text
                 $scope.fabric.selectedObject.fill = color;
             } else {
-                // Change the color of the shirt
+                // Change the color of shirt
                 $scope.fabric.stopContinuousRendering();
                 $scope.fabric.canvasBackgroundColor = color;
             }
@@ -76,7 +75,7 @@ app.controller('mainController', ['$scope', '$http', '$timeout', 'Fabric', 'Fabr
         }
 
 
-        // Init
+        // Initialize
         // ================================================================
         $scope.init = function() {
             $scope.fabric = new Fabric({
@@ -89,7 +88,7 @@ app.controller('mainController', ['$scope', '$http', '$timeout', 'Fabric', 'Fabr
             $scope.changeShirt("images/mens_hoodie_front.png");
         };
 
-        // Time machine
+        // Undo FN
         // ================================================================
         $scope.undo = function(index) {
             if ($scope.fabric.history.length > 0) {

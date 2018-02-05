@@ -6,20 +6,23 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 //SQL setup
 var mysql      = require('mysql');
-// var connection = mysql.createConnection({
-//   host  : "localhost",
-//   user  : "admin",
-//   password: 'admin',
-//   database: 'fresh-prints_db',
-//   port: 3306
-// });
+// Local MySQL Connection
 var connection = mysql.createConnection({
-  host  : "sql12.freemysqlhosting.net",
-  user  : "sql12219627",
-  password: 'FS63zXTtEV',
-  database: 'sql12219627',
+  host  : "localhost",
+  user  : "admin",
+  password: 'admin',
+  database: 'fresh-prints_db',
   port: 3306
 });
+
+// Remote MySQL Connection
+// var connection = mysql.createConnection({
+//   host  : "sql12.freemysqlhosting.net",
+//   user  : "sql12219627",
+//   password: '********',
+//   database: 'sql12219627',
+//   port: 3306
+// });
 
 console.log("connecting to Fresh-Prints MySQL DB...");
 connection.connect(function(err, results) {
@@ -76,15 +79,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 //HTTP Server Routes
 
   app.get('/',function(req,res){
-
      res.sendFile(__dirname + '/index.html');
-
   });
 
-  // app.post('/upload', upload.single('file'));
-
   app.post('/upload', upload.single('file'), function (req, res, next) {
-    console.log("success");
+    console.log("successfully uploaded");
     console.log(req.file);
     res.status(204).end();
 });
@@ -114,8 +113,7 @@ app.use(express.static(path.join(__dirname, 'public')));
               connection.query('insert into Project (Project_name, Project_content) ' +
                   'values (?,?)', [req.body.name, req.body.content],
                   function(err, rows, fields) { 
-                      if (!err) {  // return new project ID
-                           
+                      if (!err) {  // return project ID NEW
                           returnProjectID(); 
                       } 
                       else  console.log(err);
