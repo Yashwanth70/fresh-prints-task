@@ -6,11 +6,18 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 //SQL setup
 var mysql      = require('mysql');
+// var connection = mysql.createConnection({
+//   host  : "localhost",
+//   user  : "admin",
+//   password: 'admin',
+//   database: 'fresh-prints_db',
+//   port: 3306
+// });
 var connection = mysql.createConnection({
-  host  : "localhost",
-  user  : "admin",
-  password: 'admin',
-  database: 'fresh-prints_db',
+  host  : "sql12.freemysqlhosting.net",
+  user  : "sql12219627",
+  password: 'FS63zXTtEV',
+  database: 'sql12219627',
   port: 3306
 });
 
