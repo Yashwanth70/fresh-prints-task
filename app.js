@@ -36,7 +36,15 @@ connection.connect(function(err, results) {
 });
 //Image Upload setup
 var multer  = require('multer')
-var upload = multer({ dest: 'uploads/' })
+var storage = multer.diskStorage({
+        destination: function(req, file, callback) {
+            callback(null, './public/uploads/');
+        },
+        filename: function(req, file, callback) {
+            callback(null, file.originalname);
+        }
+    });
+var upload = multer({storage: storage});
 
 // var index = require('./routes/index');
 // var users = require('./routes/users');
@@ -58,27 +66,21 @@ app.use(express.static(path.join(__dirname, 'public')));
 // app.use('/', index);
 // app.use('/users', users);
 
-// catch 404 and forward to error handler
-app.use(function(req, res, next) {
-  var err = new Error('Not Found');
-  err.status = 404;
-  next(err);
-});
-
-// error handler
-app.use(function(err, req, res, next) {
-  // set locals, only providing error in development
-  res.locals.message = err.message;
-  res.locals.error = req.app.get('env') === 'development' ? err : {};
-
-  // render the error page
-  res.status(err.status || 500);
-  res.render('error');
-
-
 //HTTP Server Routes
 
-  app.post('/upload', upload.single('file'));
+  app.get('/',function(req,res){
+
+     res.sendFile(__dirname + '/index.html');
+
+  });
+
+  // app.post('/upload', upload.single('file'));
+
+  app.post('/upload', upload.single('file'), function (req, res, next) {
+    console.log("success");
+    console.log(req.file);
+    res.status(204).end();
+});
 
   app.get("/projectList", function(req, res) {
         connection.query('SELECT * from Project', function(err, rows, fields) {
@@ -120,6 +122,24 @@ app.use(function(err, req, res, next) {
                   });
           }
       });
-});
+
+      // catch 404 and forward to error handler
+      app.use(function(req, res, next) {
+        var err = new Error('Not Found');
+        err.status = 404;
+        next(err);
+      });
+
+      // error handler
+      app.use(function(err, req, res, next) {
+        // set locals, only providing error in development
+        res.locals.message = err.message;
+        res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+        // render the error page
+        res.status(err.status || 500);
+        res.render('error');
+
+      });
 
 module.exports = app;
